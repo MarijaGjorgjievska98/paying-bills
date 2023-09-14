@@ -1,0 +1,49 @@
+.edit-profile {
+    background-color: #eee;
+}
+
+.avatar {
+    width: 150px;
+}
+.card-header
+{
+    font-size: 1.3em;
+}
+.edit .card-body p
+{
+    text-align: right;
+}
+.edit .card-body .operators
+{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+.card-body input
+{
+    width: 100%;
+}
+
+.empty-avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+    width: 150px;
+    height: 150px;
+    background-color: #bbbbbb;
+}
+
+.empty-avatar p {
+    font-size: 1.5em;
+    font-weight: 400;
+}
+
+input {
+    border: none;
+}
+
+input:focus {
+    outline: none;
+    /* border-bottom: solid 1px gray; */
+}

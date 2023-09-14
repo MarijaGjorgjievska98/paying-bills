@@ -1,0 +1,49 @@
+"""Exposes a URL that specifies the behaviour of this scalar."""
+directive @specifiedBy(
+  """The URL that specifies the behaviour of this scalar."""
+  url: String!
+) on SCALAR
+
+"""this represents a bill"""
+type Bill {
+  id: ID!
+  invoiceNumber: String!
+  paid: Boolean!
+  paymentDeadline: String!
+  amount: Int!
+  operator: Operator
+}
+
+"""Functions to create things"""
+type Mutation {
+  addUser(firstName: String!): User
+  editUser(id: ID!, firstName: String!, lastName: String, email: String!, phone: String, thumbnailUrl: String, operators: [ID]): User
+  payBill(id: ID!): Bill
+  deleteBill(id: ID!): Bill
+}
+
+"""this represents an operator"""
+type Operator {
+  id: ID!
+  logoUrl: String
+  name: String!
+  email: String!
+}
+
+type Query {
+  user(id: ID!): User
+  bills(userId: ID!, paid: Boolean!): [Bill]
+}
+
+"""this represents a user"""
+type User {
+  id: ID!
+  firstName: String!
+  lastName: String
+  email: String!
+  phone: String
+  thumbnailUrl: String
+  bills: [Bill]
+  operators: [Operator]
+}
+
