@@ -10,6 +10,7 @@ import type { HomeUnpaidBillsQuery as HomeUnpaidBillsQueryType } from "./__gener
 import type { HeaderFragment$key } from "./__generated__/HeaderFragment.graphql";
 import type { ProfileInformationBoxFragment$key } from "./User/__generated__/ProfileInformationBoxFragment.graphql";
 import type { BillBoxFragment$key } from "./Bills/__generated__/BillBoxFragment.graphql";
+import "./Home.css"
 
 const HomeQuery = graphql`
   query HomeQuery {
@@ -40,13 +41,14 @@ export default function Home(): React.ReactElement {
   const user = userData.user
   const bills = billsData.bills;
 
-  return <div>
-      <Header user={user} />
-      <ProfileInformationBox user={user}></ProfileInformationBox>
-      <div>
-      {bills?.map(bill => <BillBox bill={bill as BillBoxFragment$key} />)}
+  return <div className="container">
+    <ProfileInformationBox user={user}></ProfileInformationBox>
+    <div className="bills-to-be-paid mt-5">
+      <h3 className="text-left mb-3">Сметки за плаќање</h3>
+      <div className="bill-wrapper">
+        {bills?.map(bill => <div className="bill"><BillBox bill={bill as BillBoxFragment$key} /></div>)}
       </div>
-      <Footer></Footer>
+    </div>
   </div>
-  
+
 }

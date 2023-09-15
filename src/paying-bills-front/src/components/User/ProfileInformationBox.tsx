@@ -39,6 +39,9 @@ export default function ProfileInformationBox({user} : Props ): React.ReactEleme
 
   if (!user) return <div></div>;
 
+  let operators: string = "";
+  user.operators?.forEach(operator =>  operators = operators.concat("  ", (operator?.name?? "")))
+
   return <section className="vh-100 profile-box">
     <div className="container h-100">
       <div className="row d-flex justify-content-center align-items-center h-100">
@@ -71,7 +74,7 @@ export default function ProfileInformationBox({user} : Props ): React.ReactEleme
                   <div className="row pt-1">
                     <div className="col-6 mb-3">
                       <h6>Сметки на кои се внимава</h6>
-                      <p className="text-muted">Евн и А1</p>
+                      <p className="text-muted">{operators}</p>
                     </div>
                     <div className="col-6 mb-3">
                       <h6>Сметки со поминат рок за плаќање</h6>

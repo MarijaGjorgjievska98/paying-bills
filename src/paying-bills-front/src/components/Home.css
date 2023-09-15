@@ -1,0 +1,5 @@
+.bill-wrapper{
+    display: flex;
+    gap: 60px;
+    flex-wrap: wrap;
+}

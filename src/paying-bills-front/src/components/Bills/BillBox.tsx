@@ -72,8 +72,11 @@ export default function BillBox({bill} : Props): React.ReactElement {
     })
 
   }
+  const todaysDate = new Date();
+  const paymentDeadline = new Date(+data.paymentDeadline );
 
-  return  <div className="card card-margin">
+  const isOverdue : boolean =  !data.paid && todaysDate > paymentDeadline;
+  return  <div className= {`bill card card-margin  ${isOverdue ? "border-danger" : ""}`}>
   <div className="card-body ">
       <div className="widget">
           <div className="widget-title-wrapper">
@@ -83,7 +86,7 @@ export default function BillBox({bill} : Props): React.ReactElement {
               
               <div className="widget-meeting-info">
                   <span className="widget-pro-title">{data.invoiceNumber}</span>
-                  <span className="widget-meeting-time">Истекува на: {moment(new Date(data.paymentDeadline)).format('DD.MM.YYYY')}</span>
+                  <span className="widget-meeting-time">Истекува на: {paymentDeadline.toLocaleString().split(',')[0]}</span>
                   
               </div>
           </div>
@@ -93,10 +96,10 @@ export default function BillBox({bill} : Props): React.ReactElement {
           
           {!data.paid
           ? (<div className="widget-meeting-action">
-              <button className="btn btn-sm btn-flash-border-primary" onClick={PayBill}>Плати</button>
+              <button className="btn btn-sm btn-success" onClick={PayBill}>Плати</button>
           </div>)
           :(<div className="widget-meeting-action">
-          <a href="#" className="btn btn-sm btn-flash-border-danger" onClick={DeleteBill}>Избриши сметка</a>
+          <button className="btn btn-sm btn-danger" onClick={DeleteBill}>Избриши сметка</button>
       </div>)}
       </div>
   </div>

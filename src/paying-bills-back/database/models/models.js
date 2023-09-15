@@ -100,7 +100,7 @@ sequelize.sync({ force: true }).then(async () => {
   const bill2 = await Bill.create({
     invoiceNumber: '54643',
     paid: false,
-    paymentDeadline: '2023-10-23',
+    paymentDeadline: '2023-10-11',
     amount: 567,
     operatorId: operatornEVN.id
   });
@@ -109,6 +109,13 @@ sequelize.sync({ force: true }).then(async () => {
     invoiceNumber: '87564',
     paid: true,
     paymentDeadline: '2023-09-15',
+    amount: 1450,
+    operatorId: operatorA1.id,
+  });
+  const bill4 = await Bill.create({
+    invoiceNumber: '87764',
+    paid: false,
+    paymentDeadline: '2023-08-15',
     amount: 1450,
     operatorId: operatorA1.id,
   });
@@ -123,7 +130,7 @@ sequelize.sync({ force: true }).then(async () => {
     phone: '078-441-442',
   });
   user.addOperators([operatorA1, operatornEVN, operatorVodovod]);
-  user.addBills([bill1, bill2, bill3]);
+  user.addBills([bill1, bill2, bill3, bill4]);
 });
 
 export default sequelize;

@@ -1,5 +1,6 @@
 import * as React from "react";
-import Select, {MultiValue, ActionMeta} from 'react-select'
+import {Routes, Route, useNavigate} from 'react-router-dom';
+import Select, {MultiValue, ActionMeta} from 'react-select';
 import graphql from 'babel-plugin-relay/macro';
 import { useLazyLoadQuery, useMutation } from "react-relay";
 import type { EditProfileInfromationQuery as  EditProfileInfromationQueryType} from "./__generated__/EditProfileInfromationQuery.graphql";
@@ -61,6 +62,7 @@ type OperatorOption = {
 } | null;
 
 export default function EditProfileInfromation(): React.ReactElement {
+  const navigate = useNavigate();
   const data = useLazyLoadQuery<EditProfileInfromationQueryType>(EditProfileInfromationQuery, {});
   const [firstName, setFirstName] = useState(data.user?.firstName);
   const [lastName, setLastName] = useState(data.user?.lastName);
@@ -94,6 +96,7 @@ export default function EditProfileInfromation(): React.ReactElement {
       })
 
     }
+    navigate('/');
   }
 
   const handleOperatorChange = (newValue: MultiValue<OperatorOption>, actionMeta: ActionMeta<OperatorOption>) => {

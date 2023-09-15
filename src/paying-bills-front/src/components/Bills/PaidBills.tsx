@@ -19,7 +19,11 @@ const PaidBillsQuery = graphql`
 export default function PaidBills(): React.ReactElement {
   const data = useLazyLoadQuery<PaidBillsQueryType>(PaidBillsQuery, {});
 
-  return  <div className="bills">
-  {data.bills?.map(bill => <BillBox bill={bill as BillBoxFragment$key} />)}
-</div>
+  return <div className="paid-bills container mt-5">
+    <h3 className="text-left mb-3"> Платени сметки </h3>
+    <div className="bill-wrapper">
+      {data.bills?.map((bill, index) => <div className="bill"><BillBox
+      bill={bill as BillBoxFragment$key} /></div>)}
+    </div>
+  </div>
 }
