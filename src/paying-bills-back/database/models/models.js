@@ -8,7 +8,6 @@ export const User = sequelize.define('user', {
   // attributes
   firstName: {
     type: Sequelize.STRING,
-    allowNull: false,
   },
   lastName: {
     type: Sequelize.STRING,
@@ -23,6 +22,10 @@ export const User = sequelize.define('user', {
   },
   thumbnailUrl: {
     type: Sequelize.STRING,
+  },
+  lastLogIn:
+  {
+    type: Sequelize.DATE,
   },
 });
 
@@ -59,6 +62,19 @@ export const Operator = sequelize.define('operator', {
     type: Sequelize.STRING,
     allowNull: false,
   },
+  regExForInvoce: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  }, 
+  regExForpaymentDeadline: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  }, 
+  regExForamount: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+
 });
 
 User.hasMany(Bill);
@@ -76,47 +92,56 @@ sequelize.sync({ force: true }).then(async () => {
     logoUrl: 'https://www.a1.mk/o/A1-theme/images/logo@2x.png',
     name: 'A1',
     email: 'm.gorgi47@gmail.com',
+    regExForInvoce : '(?<=Број\s+на\s+фактура:\s+)\d{1,}',
+    regExForpaymentDeadline: '(?<=Рок\s+на\s+плаќање:\s+)\d{2}\.\d{2}\.\d{4}',
+    regExForamount: '/(\d{1,3}\.)*(\d{1,3}),\d{2}(?=\s+ден\.)/g ',
   });
   const operatornEVN = await Operator.create({
     logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Logo_EVN.svg/2560px-Logo_EVN.svg.png',
     name: 'EVN',
     email: 'm.gorgi47@gmail.com',
+    regExForInvoce : '/(?<=фактура\s+за\s+електрична\s+енергија\s+)([^\s]+)/g',
+    regExForpaymentDeadline: '/(?<=рок\s+на\s+плаќање\s+до\s+)\d{2}\.\d{2}\.\d{4}/g',
+    regExForamount: '/\d{1,}\.\d{2}(?=\s+денари)/g',
   });
   const operatorVodovod = await Operator.create({
     logoUrl: 'https://play-lh.googleusercontent.com/xj3UnJhAUtb5UhTZeY-pO3KLpiT0K2Bkb_L-xrLb72hCBeVqQ-AgtPFULyqnUBnamg',
     name: 'Водовод',
     email: 'm.gorgi47@gmail.com',
+    regExForInvoce : '/ ((?<=број\s+)\d{1,})(?=\s+и\s+рок)/g',
+    regExForpaymentDeadline: '/(?<=рок\s+на\s+плаќање\s+)\d{2}\.\d{2}\.\d{4}/g',
+    regExForamount: '/ \d{1,}\.\d{2}(?=\s+денари\.)/g',
   });
 
   // bills
   const bill1 = await Bill.create({
-    invoiceNumber: '12345',
-    paid: true,
-    paymentDeadline: '2023-10-15',
-    amount: 1500,
+    invoiceNumber: '106489487109',
+    paid: false,
+    paymentDeadline: '2023-06-20',
+    amount: 761,
     operatorId: operatorA1.id
   });
 
   const bill2 = await Bill.create({
-    invoiceNumber: '54643',
+    invoiceNumber: '95016013012646',
     paid: false,
-    paymentDeadline: '2023-10-11',
-    amount: 567,
-    operatorId: operatornEVN.id
+    paymentDeadline: '2023-09-20',
+    amount: 1143,
+    operatorId: operatorVodovod.id
   });
 
-  const bill3 = await Bill.create({
-    invoiceNumber: '87564',
-    paid: true,
-    paymentDeadline: '2023-09-15',
-    amount: 1450,
-    operatorId: operatorA1.id,
-  });
+  // const bill3 = await Bill.create({
+  //   invoiceNumber: '87564',
+  //   paid: false,
+  //   paymentDeadline: '2023-09-15',
+  //   amount: 1450,
+  //   operatorId: operatorA1.id,
+  // });
   const bill4 = await Bill.create({
-    invoiceNumber: '87764',
+    invoiceNumber: '106677985366',
     paid: false,
-    paymentDeadline: '2023-08-15',
-    amount: 1450,
+    paymentDeadline: '2023-09-19',
+    amount: 699,
     operatorId: operatorA1.id,
   });
 
@@ -126,11 +151,23 @@ sequelize.sync({ force: true }).then(async () => {
     lastName: 'Gjorgjievska',
     email: 'm.gorgi47@gmail.com',
     thumbnailUrl:
+      '',
+    phone: '',
+  });
+  // user.addOperators([operatorA1, operatornEVN, operatorVodovod]);
+  user.addBills([bill1, bill2, bill4]);
+
+  const user1 = await User.create({
+    firstName: 'Marija',
+    lastName: 'Gjorgjievska',
+    email: 'm.gjorgjievska@yahoo.com',
+    thumbnailUrl:
       'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp',
     phone: '078-441-442',
   });
-  user.addOperators([operatorA1, operatornEVN, operatorVodovod]);
-  user.addBills([bill1, bill2, bill3, bill4]);
+
 });
+
+
 
 export default sequelize;

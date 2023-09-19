@@ -25,7 +25,7 @@ const UserType = new GraphQLObjectType({
         },
       },
       firstName: {
-        type: GraphQLNonNull(GraphQLString),
+        type: GraphQLString,
         resolve(user) {
           return user.firstName;
         },
@@ -146,6 +146,24 @@ const OperatorType = new GraphQLObjectType({
           return operator.email;
         },
       },
+      regExForInvoce: {
+        type: GraphQLNonNull(GraphQLString),
+        resolve(operator) {
+          return operator.regExForInvoce;
+        },
+      },
+      regExForpaymentDeadline: {
+        type: GraphQLNonNull(GraphQLString),
+        resolve(operator) {
+          return operator.regExForpaymentDeadline;
+        },
+      },
+      regExForamount: {
+        type: GraphQLNonNull(GraphQLString),
+        resolve(operator) {
+          return operator.regExForamount;
+        },
+      },
     };
   },
 });
@@ -161,6 +179,25 @@ const Query = new GraphQLObjectType({
       //validations can go here
       resolve(root, args) {
         return db.models.user.findOne({ where: args, include: { model: OperatorModel } });
+      },
+    },
+    userByEmail: {
+      type: UserType,
+      args: {
+        email: { type: new GraphQLNonNull(GraphQLString) },
+      },
+      //validations can go here
+      resolve(root, args) {
+        return db.models.user.findOne({ where: args, include: { model: OperatorModel } });
+      },
+    },
+    usersEmails: {
+      type: new GraphQLList(UserType),
+      //validations can go here
+      resolve(root, args) {
+
+
+        return db.models.user.findAll();
       },
     },
     bills: {
@@ -179,6 +216,13 @@ const Query = new GraphQLObjectType({
         return db.models.bill.findAll({ where: {userId: args.userId, paid: args.paid}, order: [['paymentDeadline', sortDirection]], include: { model: OperatorModel } });
       },
     },
+    operators: {
+      type: new GraphQLList(OperatorType),
+      resolve()
+      {
+        return db.models.user.findAll();
+      }
+    }
   },
 });
 
@@ -190,13 +234,13 @@ const Mutation = new GraphQLObjectType({
       addUser: {
         type: UserType,
         args: {
-          firstName: {
-            type: new GraphQLNonNull(GraphQLString),
+          email: {
+            type:  GraphQLString,
           },
         },
         resolve(_, args) {
           return UserModel.create({
-            firstName: args.firstName,
+            email: args.email,
           });
         },
       },
@@ -254,6 +298,19 @@ const Mutation = new GraphQLObjectType({
           }
         },
       },
+      // updateLastLogIn: {
+      //   type: UserType,
+      //   args: {
+      //     lastLogIn: {
+      //       type:  Sequelize.DATE,
+      //     },
+      //   },
+      //   resolve(_, args) {
+      //     return UserModel.create({
+      //       lastLogIn: args.lastLogIn,
+      //     });
+      //   },
+      // },
       payBill: {
         type: BillType,
         args: {
