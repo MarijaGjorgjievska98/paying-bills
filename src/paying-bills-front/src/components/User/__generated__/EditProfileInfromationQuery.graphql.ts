@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<4b075806728a45e8b81d4721a8ba3c48>>
+ * @generated SignedSource<<ab2bb4a7058d73c8519a51c667b6f2e3>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,11 +9,13 @@
 // @ts-nocheck
 
 import { ConcreteRequest, Query } from 'relay-runtime';
-export type EditProfileInfromationQuery$variables = {};
+export type EditProfileInfromationQuery$variables = {
+  email: string;
+};
 export type EditProfileInfromationQuery$data = {
-  readonly user: {
+  readonly userByEmail: {
     readonly email: string;
-    readonly firstName: string;
+    readonly firstName: string | null;
     readonly id: string;
     readonly lastName: string | null;
     readonly operators: ReadonlyArray<{
@@ -30,29 +32,36 @@ export type EditProfileInfromationQuery = {
 };
 
 const node: ConcreteRequest = (function(){
-var v0 = {
+var v0 = [
+  {
+    "defaultValue": null,
+    "kind": "LocalArgument",
+    "name": "email"
+  }
+],
+v1 = {
   "alias": null,
   "args": null,
   "kind": "ScalarField",
   "name": "id",
   "storageKey": null
 },
-v1 = [
+v2 = [
   {
     "alias": null,
     "args": [
       {
-        "kind": "Literal",
-        "name": "id",
-        "value": 1
+        "kind": "Variable",
+        "name": "email",
+        "variableName": "email"
       }
     ],
     "concreteType": "User",
     "kind": "LinkedField",
-    "name": "user",
+    "name": "userByEmail",
     "plural": false,
     "selections": [
-      (v0/*: any*/),
+      (v1/*: any*/),
       {
         "alias": null,
         "args": null,
@@ -96,7 +105,7 @@ v1 = [
         "name": "operators",
         "plural": true,
         "selections": [
-          (v0/*: any*/),
+          (v1/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -108,37 +117,37 @@ v1 = [
         "storageKey": null
       }
     ],
-    "storageKey": "user(id:1)"
+    "storageKey": null
   }
 ];
 return {
   "fragment": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
     "name": "EditProfileInfromationQuery",
-    "selections": (v1/*: any*/),
+    "selections": (v2/*: any*/),
     "type": "Query",
     "abstractKey": null
   },
   "kind": "Request",
   "operation": {
-    "argumentDefinitions": [],
+    "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
     "name": "EditProfileInfromationQuery",
-    "selections": (v1/*: any*/)
+    "selections": (v2/*: any*/)
   },
   "params": {
-    "cacheID": "ee26c22cbd35e231d71cb37a29c1e136",
+    "cacheID": "fc59feb5881b4667f67b52ce6b1a6d78",
     "id": null,
     "metadata": {},
     "name": "EditProfileInfromationQuery",
     "operationKind": "query",
-    "text": "query EditProfileInfromationQuery {\n  user(id: 1) {\n    id\n    firstName\n    lastName\n    email\n    phone\n    thumbnailUrl\n    operators {\n      id\n      name\n    }\n  }\n}\n"
+    "text": "query EditProfileInfromationQuery(\n  $email: String!\n) {\n  userByEmail(email: $email) {\n    id\n    firstName\n    lastName\n    email\n    phone\n    thumbnailUrl\n    operators {\n      id\n      name\n    }\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "3703329b8e23a13d884934bc12728967";
+(node as any).hash = "5ac669932884f6af822635f232117803";
 
 export default node;

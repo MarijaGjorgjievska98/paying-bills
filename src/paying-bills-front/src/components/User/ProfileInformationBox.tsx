@@ -24,7 +24,7 @@ import type { BillBoxFragment$key } from "../Bills/__generated__/BillBoxFragment
 type Props = {
   user: {
     readonly email: string;
-    readonly firstName: string;
+    readonly firstName: string |  null;
     readonly lastName: string | null;
     readonly operators: readonly ({
         readonly name: string;
@@ -49,8 +49,8 @@ export default function ProfileInformationBox({user} : Props ): React.ReactEleme
           <div className="card mb-3" >
             <div className="row g-0">
               <div className="col-md-4 gradient-custom text-center text-white">
-                <img src={user.thumbnailUrl ?? ''}
-                  alt="Avatar" className="img-fluid my-5 avatar" />
+                { user.thumbnailUrl && <img src={user.thumbnailUrl}
+                  alt="Avatar" className="img-fluid my-5 avatar" />}
                 {/* <h5>{data.firstName} {data.lastName}</h5> */}
                 <h5>{user.firstName} {user.lastName}</h5>
 
@@ -76,10 +76,10 @@ export default function ProfileInformationBox({user} : Props ): React.ReactEleme
                       <h6>Сметки на кои се внимава</h6>
                       <p className="text-muted">{operators}</p>
                     </div>
-                    <div className="col-6 mb-3">
+                    {/* <div className="col-6 mb-3">
                       <h6>Сметки со поминат рок за плаќање</h6>
                       <p className="text-muted">3</p>
-                    </div>
+                    </div> */}
                   </div>
                   <div className="d-flex justify-content-start">
                     <a href="#!"><i className="fab fa-facebook-f fa-lg me-3"></i></a>

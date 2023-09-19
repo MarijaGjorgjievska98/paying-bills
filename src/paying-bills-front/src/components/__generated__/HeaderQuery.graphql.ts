@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<9e51e2a556a26a6c2f27b069cae813c7>>
+ * @generated SignedSource<<cdd9ca4b0b15bda08982f92ae125c38e>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -9,18 +9,19 @@
 // @ts-nocheck
 
 import { ConcreteRequest, Query } from 'relay-runtime';
-import { FragmentRefs } from "relay-runtime";
-export type AppQuery$variables = {
+export type HeaderQuery$variables = {
   email: string;
 };
-export type AppQuery$data = {
+export type HeaderQuery$data = {
   readonly userByEmail: {
-    readonly " $fragmentSpreads": FragmentRefs<"HeaderFragment">;
+    readonly firstName: string | null;
+    readonly lastName: string | null;
+    readonly thumbnailUrl: string | null;
   } | null;
 };
-export type AppQuery = {
-  response: AppQuery$data;
-  variables: AppQuery$variables;
+export type HeaderQuery = {
+  response: HeaderQuery$data;
+  variables: HeaderQuery$variables;
 };
 
 const node: ConcreteRequest = (function(){
@@ -37,13 +38,34 @@ v1 = [
     "name": "email",
     "variableName": "email"
   }
-];
+],
+v2 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "firstName",
+  "storageKey": null
+},
+v3 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "lastName",
+  "storageKey": null
+},
+v4 = {
+  "alias": null,
+  "args": null,
+  "kind": "ScalarField",
+  "name": "thumbnailUrl",
+  "storageKey": null
+};
 return {
   "fragment": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Fragment",
     "metadata": null,
-    "name": "AppQuery",
+    "name": "HeaderQuery",
     "selections": [
       {
         "alias": null,
@@ -53,11 +75,9 @@ return {
         "name": "userByEmail",
         "plural": false,
         "selections": [
-          {
-            "args": null,
-            "kind": "FragmentSpread",
-            "name": "HeaderFragment"
-          }
+          (v2/*: any*/),
+          (v3/*: any*/),
+          (v4/*: any*/)
         ],
         "storageKey": null
       }
@@ -69,7 +89,7 @@ return {
   "operation": {
     "argumentDefinitions": (v0/*: any*/),
     "kind": "Operation",
-    "name": "AppQuery",
+    "name": "HeaderQuery",
     "selections": [
       {
         "alias": null,
@@ -79,27 +99,9 @@ return {
         "name": "userByEmail",
         "plural": false,
         "selections": [
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "firstName",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "lastName",
-            "storageKey": null
-          },
-          {
-            "alias": null,
-            "args": null,
-            "kind": "ScalarField",
-            "name": "thumbnailUrl",
-            "storageKey": null
-          },
+          (v2/*: any*/),
+          (v3/*: any*/),
+          (v4/*: any*/),
           {
             "alias": null,
             "args": null,
@@ -113,16 +115,16 @@ return {
     ]
   },
   "params": {
-    "cacheID": "e10fe48909dcc684dcf735116ba4b798",
+    "cacheID": "442171c5e11c376367256f07daf60b23",
     "id": null,
     "metadata": {},
-    "name": "AppQuery",
+    "name": "HeaderQuery",
     "operationKind": "query",
-    "text": "query AppQuery(\n  $email: String!\n) {\n  userByEmail(email: $email) {\n    ...HeaderFragment\n    id\n  }\n}\n\nfragment HeaderFragment on User {\n  firstName\n  lastName\n  thumbnailUrl\n}\n"
+    "text": "query HeaderQuery(\n  $email: String!\n) {\n  userByEmail(email: $email) {\n    firstName\n    lastName\n    thumbnailUrl\n    id\n  }\n}\n"
   }
 };
 })();
 
-(node as any).hash = "4734f3c10c4bff95047f6683aa5495c3";
+(node as any).hash = "2154eb8f3f141dd5c329c7f720337106";
 
 export default node;

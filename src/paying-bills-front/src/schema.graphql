@@ -16,7 +16,7 @@ type Bill {
 
 """Functions to create things"""
 type Mutation {
-  addUser(firstName: String!): User
+  addUser(email: String): User
   editUser(id: ID!, firstName: String!, lastName: String, email: String!, phone: String, thumbnailUrl: String, operators: [ID]): User
   payBill(id: ID!): Bill
   deleteBill(id: ID!): Bill
@@ -28,17 +28,23 @@ type Operator {
   logoUrl: String
   name: String!
   email: String!
+  regExForInvoce: String!
+  regExForpaymentDeadline: String!
+  regExForamount: String!
 }
 
 type Query {
   user(id: ID!): User
+  userByEmail(email: String!): User
+  usersEmails: [User]
   bills(userId: ID!, paid: Boolean!): [Bill]
+  operators: [Operator]
 }
 
 """this represents a user"""
 type User {
   id: ID!
-  firstName: String!
+  firstName: String
   lastName: String
   email: String!
   phone: String

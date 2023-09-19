@@ -6,10 +6,13 @@ import { useLazyLoadQuery, useMutation } from "react-relay";
 import type { EditProfileInfromationQuery as  EditProfileInfromationQueryType} from "./__generated__/EditProfileInfromationQuery.graphql";
 import "./EditProfileInfromation.css"
 import { useState } from "react";
+import { useAuthContext } from "./UserContex";
 
 const EditProfileInfromationQuery = graphql`
-query EditProfileInfromationQuery {
-  user(id: 1) {
+query EditProfileInfromationQuery(
+  $email: String!
+) {
+  userByEmail(email: $email) {
     id
     firstName
     lastName
@@ -62,18 +65,19 @@ type OperatorOption = {
 } | null;
 
 export default function EditProfileInfromation(): React.ReactElement {
+  const { email } = useAuthContext();
   const navigate = useNavigate();
-  const data = useLazyLoadQuery<EditProfileInfromationQueryType>(EditProfileInfromationQuery, {});
-  const [firstName, setFirstName] = useState(data.user?.firstName);
-  const [lastName, setLastName] = useState(data.user?.lastName);
-  const [email, setEmail] = useState(data.user?.email);
-  const [phone, setPhone] = useState(data.user?.phone);
-  const [thumbnailUrl, setThumbnailUrl] = useState(data.user?.thumbnailUrl);
-  const [operators, setOperators] = useState(data.user?.operators?.map(operator => {return operator && {value: operator.id, label: operator.name};}));
+  // @ts-ignore
+  const data = useLazyLoadQuery<EditProfileInfromationQueryType>(EditProfileInfromationQuery, {email});
+  const [firstName, setFirstName] = useState(data.userByEmail?.firstName);
+  const [lastName, setLastName] = useState(data.userByEmail?.lastName);
+  const [emailEdit, setEmailEdit] = useState(data.userByEmail?.email);
+  const [phone, setPhone] = useState(data.userByEmail?.phone);
+  const [thumbnailUrl, setThumbnailUrl] = useState(data.userByEmail?.thumbnailUrl);
+  const [operators, setOperators] = useState(data.userByEmail?.operators?.map(operator => {return operator && {value: operator.id, label: operator.name};}));
   const [commitMutation, isMutationInFlight] = useMutation(EditProfileInfromationMutation);
   const options: OperatorOption[] = [
     { value: '1', label: 'A1' },
-    { value: '2', label: 'EVN' },
     { value: '3', label: 'Водовод' }
   ]
   const defaultValue : { value: string, label: string} [] = []
@@ -81,14 +85,14 @@ export default function EditProfileInfromation(): React.ReactElement {
   function editProfile()
   {
     // const 
-    if(data.user)
+    if(data.userByEmail)
     {
       commitMutation({
         variables: {
-          id: data.user.id , 
+          id: data.userByEmail.id , 
           firstName,
           lastName,
-          email,
+          email: emailEdit,
           phone,
           thumbnailUrl,
           operators: operators?.map(operator => operator?.value)
@@ -107,8 +111,8 @@ export default function EditProfileInfromation(): React.ReactElement {
     }
   };
 
-  console.log(data.user);
-  data.user?.operators?.forEach(operator => operator && defaultValue.push({ value: operator.id, label: operator.name }));
+  console.log(data.userByEmail);
+  data.userByEmail?.operators?.forEach(operator => operator && defaultValue.push({ value: operator.id, label: operator.name }));
 
   return <section className="edit-profile">
   <div className="container py-5">
@@ -117,14 +121,14 @@ export default function EditProfileInfromation(): React.ReactElement {
       <div className="col-lg-4">
         <div className="card mb-4">
           <div className="card-body text-center">
-            { data.user?.thumbnailUrl  ?
-            (<img src={data.user.thumbnailUrl} alt="Аватар" className="rounded-circle img-fluid avatar" ></img>)
+            { data.userByEmail?.thumbnailUrl  ?
+            (<img src={data.userByEmail.thumbnailUrl} alt="Аватар" className="rounded-circle img-fluid avatar" ></img>)
             : (<div  className="rounded-circle empty-avatar"><p className="text-white">Слика</p></div>)}
             
 
-            <h5 className="my-3">{data.user?.firstName} {data.user?.lastName}</h5>
-            <p className="text-muted mb-1">{data.user?.email}</p>
-            <p className="text-muted mb-4">{data.user?.phone}</p>
+            <h5 className="my-3">{data.userByEmail?.firstName} {data.userByEmail?.lastName}</h5>
+            <p className="text-muted mb-1">{data.userByEmail?.email}</p>
+            <p className="text-muted mb-4">{data.userByEmail?.phone}</p>
           </div>
         </div>
       </div>
@@ -137,7 +141,7 @@ export default function EditProfileInfromation(): React.ReactElement {
                 <p className="mb-0">Име</p>
               </div>
               <div className="col-sm-9">
-                <input type="text" placeholder="Внесете го вашето име" defaultValue={ data.user?.firstName? data.user.firstName : ''} onChange={e=> setFirstName(e.target.value)}></input>
+                <input type="text" placeholder="Внесете го вашето име" defaultValue={ data.userByEmail?.firstName? data.userByEmail.firstName : ''} onChange={e=> setFirstName(e.target.value)}></input>
               </div>
             </div>
             <hr></hr>
@@ -146,7 +150,7 @@ export default function EditProfileInfromation(): React.ReactElement {
                 <p className="mb-0">Презиме</p>
               </div>
               <div className="col-sm-9">
-                <input type="text" placeholder="Внесете го вашето презиме" defaultValue={ data.user?.lastName? data.user.lastName : ''} onChange={e=> setLastName(e.target.value)}></input>
+                <input type="text" placeholder="Внесете го вашето презиме" defaultValue={ data.userByEmail?.lastName? data.userByEmail.lastName : ''} onChange={e=> setLastName(e.target.value)}></input>
               </div>
             </div>
             <hr></hr>
@@ -155,7 +159,7 @@ export default function EditProfileInfromation(): React.ReactElement {
                 <p className="mb-0">Мејл</p>
               </div>
               <div className="col-sm-9">
-              <input type="email" placeholder="Внесете го вашиот e-mail" defaultValue={ data.user?.email? data.user.email : ''} onChange={e=> setEmail(e.target.value)}></input>
+              <input type="email" placeholder="Внесете го вашиот e-mail" defaultValue={ data.userByEmail?.email? data.userByEmail.email : ''} onChange={e=> setEmailEdit(e.target.value)}></input>
               </div>
             </div>
             <hr></hr>
@@ -164,7 +168,7 @@ export default function EditProfileInfromation(): React.ReactElement {
                 <p className="mb-0">Телефонки број</p>
               </div>
               <div className="col-sm-9">
-                <input type="text" placeholder="Внесете го вашиот телефонски број" defaultValue={ data.user?.phone? data.user.phone : ''} onChange={e=> setPhone(e.target.value)}></input>
+                <input type="text" placeholder="Внесете го вашиот телефонски број" defaultValue={ data.userByEmail?.phone? data.userByEmail.phone : ''} onChange={e=> setPhone(e.target.value)}></input>
               </div>
             </div>
             <hr></hr>
@@ -173,7 +177,7 @@ export default function EditProfileInfromation(): React.ReactElement {
                 <p className="mb-0">Слика</p>
               </div>
               <div className="col-sm-9">
-                <input type="text" placeholder="Внесете url од вашата слика" defaultValue={ data.user?.thumbnailUrl? data.user.thumbnailUrl : ''} onChange={e=> setThumbnailUrl(e.target.value)}></input>
+                <input type="text" placeholder="Внесете url од вашата слика" defaultValue={ data.userByEmail?.thumbnailUrl? data.userByEmail.thumbnailUrl : ''} onChange={e=> setThumbnailUrl(e.target.value)}></input>
               </div>
             </div>
 

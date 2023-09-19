@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<15cbc10862060060f7ca2839406123d0>>
+ * @generated SignedSource<<97c4f1794279d85f8314a09d96c30ad3>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -11,7 +11,7 @@
 import { Fragment, ReaderFragment } from 'relay-runtime';
 import { FragmentRefs } from "relay-runtime";
 export type HeaderFragment$data = {
-  readonly firstName: string;
+  readonly firstName: string | null;
   readonly lastName: string | null;
   readonly thumbnailUrl: string | null;
   readonly " $fragmentType": "HeaderFragment";

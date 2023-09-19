@@ -1,5 +1,5 @@
 /**
- * @generated SignedSource<<8c944292716e67cac7ee6be51609e694>>
+ * @generated SignedSource<<5aff54876796187c51f9471a488fdbbb>>
  * @lightSyntaxTransform
  * @nogrep
  */
@@ -21,7 +21,7 @@ export type EditProfileInfromationMutation$variables = {
 export type EditProfileInfromationMutation$data = {
   readonly editUser: {
     readonly email: string;
-    readonly firstName: string;
+    readonly firstName: string | null;
     readonly id: string;
     readonly lastName: string | null;
     readonly phone: string | null;

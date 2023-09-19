@@ -62,6 +62,7 @@ export default function BillBox({bill} : Props): React.ReactElement {
         id: data.id,
       },
     })
+    // window.location.reload();
   }
   function DeleteBill()
   {
@@ -70,6 +71,7 @@ export default function BillBox({bill} : Props): React.ReactElement {
         id: data.id,
       },
     })
+    // window.location.reload();
 
   }
   const todaysDate = new Date();
